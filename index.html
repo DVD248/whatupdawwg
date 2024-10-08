@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Black Website</title>
+    <title>Cool Site AEH</title>
     <style>
         @import url('https://fonts.cdnfonts.com/css/comic-sans-ms');
 
         body {
             margin: 0;
             padding: 0;
-            background-color: white;
-            color: black;
+            background-color: black;
+            color: white;
             text-align: center;
             font-family: 'Comic Sans MS', sans-serif;
             display: flex;
@@ -20,13 +20,39 @@
             height: 100vh;
             flex-direction: column;
         }
+
         a {
             text-decoration: none;
             color: white;
         }
+
         img {
             width: 150px; /* Smaller size */
             height: auto;
+        }
+
+        /* Light mode (when the device is in light mode) */
+        @media (prefers-color-scheme: light) {
+            body {
+                background-color: white;
+                color: black;
+            }
+
+            a {
+                color: black;
+            }
+        }
+
+        /* Dark mode (default) */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: black;
+                color: white;
+            }
+
+            a {
+                color: white;
+            }
         }
     </style>
 </head>

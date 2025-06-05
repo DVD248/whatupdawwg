@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pixelated Summer Scene with Toggles</title>
   <!-- Pixel Font for Retro Feel -->
   <link
@@ -443,6 +444,87 @@
       background: #fff;
       border: 2px solid #000;
       cursor: pointer;
+    }
+
+    /* Mobile Responsive Adjustments */
+    @media (max-width: 768px) {
+      .tree {
+        width: 120px; /* Bigger trees on mobile */
+      }
+
+      .icecream {
+        width: 64px;  /* Bigger ice cream */
+        height: 64px;
+      }
+
+      .chippy {
+        width: 140px; /* Bigger Chippy */
+        height: 140px;
+        right: -180px;
+      }
+
+      .chippy.active {
+        right: 20px;
+      }
+
+      .controls {
+        padding: 15px;
+      }
+
+      .controls label {
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      .audio-controls {
+        bottom: 20px;
+        left: 20px;
+        padding: 10px;
+      }
+
+      .audio-controls button {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+      }
+
+      .audio-controls input[type="range"] {
+        width: 80px;
+        height: 6px;
+      }
+
+      .audio-controls input[type="range"]::-webkit-slider-thumb {
+        width: 16px;
+        height: 20px;
+      }
+
+      .treat-counter {
+        font-size: 14px;
+        padding: 12px;
+        right: 15px;
+      }
+
+      .calendar-reveal {
+        width: 90%;
+        max-width: 300px;
+        padding: 25px;
+      }
+    }
+
+    /* Adjustments for very small screens */
+    @media (max-width: 380px) {
+      .controls label {
+        font-size: 12px;
+      }
+
+      .tree {
+        width: 100px;
+      }
+
+      .chippy {
+        width: 120px;
+        height: 120px;
+      }
     }
   </style>
 </head>

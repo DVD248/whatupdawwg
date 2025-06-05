@@ -449,81 +449,89 @@
     /* Mobile Responsive Adjustments */
     @media (max-width: 768px) {
       .tree {
-        width: 120px; /* Bigger trees on mobile */
+        width: min(25vw, 120px); /* Responsive but capped */
+        bottom: 60px;
       }
 
       .icecream {
-        width: 64px;  /* Bigger ice cream */
-        height: 64px;
+        width: min(15vw, 56px);  /* Smaller but still grabbable */
+        height: min(15vw, 56px);
       }
 
       .chippy {
-        width: 140px; /* Bigger Chippy */
-        height: 140px;
-        right: -180px;
+        width: min(30vw, 120px); /* Scales with viewport but limited */
+        height: min(30vw, 120px);
+        right: -120px;
+        bottom: 64px;
       }
 
       .chippy.active {
-        right: 20px;
+        right: min(5vw, 20px);
       }
 
       .controls {
-        padding: 15px;
+        padding: min(3vw, 12px);
       }
 
       .controls label {
-        font-size: 14px;
-        margin-bottom: 12px;
+        font-size: clamp(10px, 3vw, 14px);
+        margin-bottom: min(2vw, 10px);
       }
 
       .audio-controls {
-        bottom: 20px;
-        left: 20px;
-        padding: 10px;
+        bottom: min(4vw, 15px);
+        left: min(4vw, 15px);
+        padding: min(2vw, 8px);
+        gap: min(2vw, 8px);
       }
 
       .audio-controls button {
-        width: 32px;
-        height: 32px;
-        font-size: 18px;
+        width: min(8vw, 28px);
+        height: min(8vw, 28px);
+        font-size: min(4vw, 16px);
       }
 
       .audio-controls input[type="range"] {
-        width: 80px;
-        height: 6px;
-      }
-
-      .audio-controls input[type="range"]::-webkit-slider-thumb {
-        width: 16px;
-        height: 20px;
+        width: min(20vw, 70px);
+        height: min(1vw, 4px);
       }
 
       .treat-counter {
-        font-size: 14px;
-        padding: 12px;
-        right: 15px;
+        font-size: clamp(10px, 3vw, 14px);
+        padding: min(3vw, 12px);
+        top: min(20vw, 90px);
+        right: min(4vw, 15px);
       }
 
       .calendar-reveal {
-        width: 90%;
-        max-width: 300px;
-        padding: 25px;
+        width: min(90vw, 300px);
+        padding: min(5vw, 20px);
+      }
+
+      .sand {
+        height: min(15vw, 64px);
+        background-size: min(2vw, 8px) min(2vw, 8px);
+      }
+
+      .splat {
+        width: min(15vw, 56px);
+        height: min(15vw, 56px);
       }
     }
 
     /* Adjustments for very small screens */
     @media (max-width: 380px) {
       .controls label {
-        font-size: 12px;
+        font-size: clamp(8px, 2.5vw, 12px);
       }
 
       .tree {
-        width: 100px;
+        width: min(22vw, 100px);
       }
 
       .chippy {
-        width: 120px;
-        height: 120px;
+        width: min(28vw, 110px);
+        height: min(28vw, 110px);
       }
     }
   </style>

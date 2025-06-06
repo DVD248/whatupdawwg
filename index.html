@@ -775,7 +775,7 @@
   <div id="scene"></div>
 
   <script>
-    // Update audioManager with better initialization and error handling
+    // Update the audioManager object
     const audioManager = {
       bgMusic: document.getElementById('bgMusic'),
       chippyMusic: document.getElementById('chippyMusic'),
@@ -787,54 +787,49 @@
       isMuted: false,
 
       init() {
-        // Set initial volumes and load sounds immediately
+        // Enable mobile audio context
+        document.addEventListener('touchstart', () => {
+          // Create and resume AudioContext if needed
+          if (typeof AudioContext !== 'undefined') {
+            const audioCtx = new AudioContext();
+            audioCtx.resume();
+          }
+        }, { once: true });
+
+        // Set initial volumes
         const volume = this.volumeSlider.value / 100;
         [this.bgMusic, this.chippyMusic, this.treatSound, this.victorySound]
-          .forEach(audio => {
-            audio.volume = 0; // Start at 0 volume
-            audio.preload = 'auto';
-          });
-
-        // Start background music immediately
-        window.onload = () => {
-          const fadeIn = () => {
-            let vol = 0;
-            const interval = setInterval(() => {
-              vol += 0.05;
-              if (vol >= volume) {
-                vol = volume;
-                clearInterval(interval);
-              }
-              this.bgMusic.volume = vol;
-            }, 50);
-            
-            this.bgMusic.play().catch(() => {
-              // If autoplay fails, try on first interaction
-              const startAudio = () => {
-                this.bgMusic.play();
-                document.removeEventListener('click', startAudio);
-                document.removeEventListener('touchstart', startAudio);
-              };
-              document.addEventListener('click', startAudio);
-              document.addEventListener('touchstart', startAudio);
+            .forEach(audio => {
+                audio.volume = 0;
+                audio.preload = 'auto';
+                // Force load audio
+                audio.load();
             });
-          };
-          fadeIn();
+
+        // Mobile-friendly initialization
+        const startAudio = () => {
+            this.bgMusic.play()
+                .then(() => {
+                    const fadeIn = () => {
+                        let vol = 0;
+                        const interval = setInterval(() => {
+                            vol += 0.05;
+                            if (vol >= volume) {
+                                vol = volume;
+                                clearInterval(interval);
+                            }
+                            this.bgMusic.volume = vol;
+                        }, 50);
+                    };
+                    fadeIn();
+                })
+                .catch(e => console.warn('Audio start failed:', e));
         };
 
-        // Backup autoplay on any user interaction
-        const startOnInteraction = () => {
-          if (this.bgMusic.paused) {
-            this.bgMusic.play();
-          }
-          ['click', 'touchstart', 'keydown'].forEach(event => 
-            document.removeEventListener(event, startOnInteraction)
-          );
-        };
-
-        ['click', 'touchstart', 'keydown'].forEach(event => 
-          document.addEventListener(event, startOnInteraction)
-        );
+        // Multiple trigger points for audio start
+        ['click', 'touchstart', 'touchend'].forEach(event => {
+            document.addEventListener(event, startAudio, { once: true });
+        });
 
         this.volumeSlider.addEventListener('input', (e) => {
           const vol = e.target.value / 100;
@@ -851,11 +846,21 @@
       },
 
       playTreatSound() {
-        // Create and play treat sound immediately
+        // Create new audio instance for better mobile support
         const sound = new Audio('coin.mp3');
         sound.volume = this.volumeSlider.value / 100;
         sound.muted = this.isMuted;
-        sound.play().catch(e => console.warn('Treat sound error:', e));
+        
+        // Promise-based play with retry
+        const playAttempt = () => {
+            sound.play()
+                .catch(e => {
+                    console.warn('Treat sound retry:', e);
+                    setTimeout(playAttempt, 100);
+                });
+        };
+        playAttempt();
+        
         setTimeout(() => sound.remove(), 1000);
       },
 
@@ -901,6 +906,12 @@
       },
 
       playVictorySound() {
+        // Ensure audio context is running
+        if (typeof AudioContext !== 'undefined') {
+          const audioCtx = new AudioContext();
+          audioCtx.resume();
+        }
+
         const fadeOut = () => {
           let vol = this.chippyMusic.volume;
           const interval = setInterval(() => {
@@ -916,24 +927,24 @@
         };
 
         const playVictory = () => {
-          this.victorySound.volume = this.volumeSlider.value / 100;
-          this.victorySound.play();
+          this.victorySound.currentTime = 0; // Reset playback position
+          const playPromise = this.victorySound.play();
           
-          this.victorySound.onended = () => {
-            setTimeout(() => {
-              this.chippyMusic.volume = 0;
-              this.chippyMusic.play();
-              let vol = 0;
-              const interval = setInterval(() => {
-                vol += 0.1;
-                if (vol >= this.volumeSlider.value / 100) {
-                  vol = this.volumeSlider.value / 100;
-                  clearInterval(interval);
-                }
-                this.chippyMusic.volume = vol;
-              }, 50);
-            }, 1000);
-          };
+          if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    this.victorySound.volume = this.volumeSlider.value / 100;
+                })
+                .catch(e => {
+                    console.warn('Victory sound failed:', e);
+                    // Retry after user interaction
+                    const retry = () => {
+                        this.victorySound.play();
+                        document.removeEventListener('touchend', retry);
+                    };
+                    document.addEventListener('touchend', retry, { once: true });
+                });
+          }
         };
 
         fadeOut();

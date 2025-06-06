@@ -139,8 +139,8 @@
 
     /* Updated Palm Trees */
     .tree {
-      bottom: 50px;
-      width: 96px;
+      bottom: 48px; /* Align with sand */
+      width: 80px;
       transform-origin: bottom center;
       animation: swayTree 8s ease-in-out infinite;
       filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
@@ -162,7 +162,7 @@
       width: 48px;
       height: 48px;
       top: -48px;
-      transform-origin: center;
+      transform-origin: center bottom;
       animation: fallIcecream 4s ease-in forwards;
       will-change: transform, opacity;
       z-index: 202;
@@ -178,22 +178,23 @@
         opacity: 1;
       }
       90% {
-        transform: translateY(calc(100vh - 80px)) translateX(calc(sin(360deg) * 30px)) rotate(180deg);
+        transform: translateY(calc(100vh - 44px)) translateX(calc(sin(360deg) * 30px)) rotate(180deg);
         opacity: 1;
       }
       100% {
-        transform: translateY(calc(100vh - 64px)) translateX(calc(sin(360deg) * 30px)) rotate(200deg);
+        transform: translateY(calc(100vh - 32px)) translateX(calc(sin(360deg) * 30px)) rotate(200deg);
         opacity: 0;
       }
     }
 
-    /* 6. Pixel Sand */
+    /* Base sand style updates */
     .sand {
-      position: absolute;
+      position: fixed;
       bottom: 0;
       left: 0;
-      width: 100%;
-      height: 64px;
+      right: 0;
+      width: 100vw;
+      height: 48px;
       background: 
         linear-gradient(45deg, #f4d03f 25%, transparent 25%) -4px 0,
         linear-gradient(-45deg, #f4d03f 25%, transparent 25%) -4px 0,
@@ -236,6 +237,8 @@
       height: 48px;
       animation: melt 2s ease-out forwards;
       z-index: 201;
+      bottom: 46px; /* Move deeper into sand */
+      transform-origin: center bottom;
     }
 
     @keyframes melt {
@@ -264,8 +267,8 @@
       position: absolute;
       width: 64px;
       height: 64px;
-      bottom: 54px; /* Sink slightly into sand */
-      transform: rotate(-15deg); /* Slight tilt for beach vibe */
+      bottom: 44px; /* Slightly lower */
+      transform: rotate(-15deg) translateY(4px); /* Slight adjust to touch sand */
       opacity: 0.95;
       z-index: 150;
       filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.25));
@@ -280,17 +283,18 @@
       filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.4)) brightness(0.7);
     }
 
-    /* Fixed Chippy styles */
+    /* Fixed Chippy styles - replace existing chippy styles */
     .chippy {
       position: fixed;
-      width: 100px;
-      height: 100px;
-      bottom: 55px; /* Slightly sunk into sand */
-      right: -150px;
-      z-index: 201; /* Between sand pattern and ice cream */
+      width: 92px;
+      height: 92px;
+      bottom: 42px; /* Lower position to sit in sand */
+      right: -100px; /* Start position */
+      z-index: 201;
       transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
       filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+      transform-origin: bottom center;
     }
 
     .chippy::after {
@@ -320,24 +324,60 @@
       75% { transform: translateY(-10px) rotate(5deg); }
     }
 
-    /* Calendar reveal styles */
+    /* Calendar reveal styles - replace existing */
     .calendar-reveal {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.9);
-      padding: 20px;
-      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.97);
+      width: min(300px, 90%);
+      padding: 24px;
+      gap: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.3s ease;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      border: 2px solid rgba(255,255,255,0.15);
     }
 
     .calendar-reveal.show {
       opacity: 1;
-      pointer-events: auto;
+      pointer-events: all;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .calendar-reveal h3 {
+      color: white;
+      font-size: 15px;
+      line-height: 1.5;
+      letter-spacing: -0.2px;
+      width: 100%;
+      padding: 0 12px;
+      margin: 0;
+    }
+
+    .calendar-reveal a {
+      display: inline-block;
+      width: 100%;
+      padding: 14px;
+      margin: 4px 0 0 0;
+      font-size: 13px;
+      background: rgba(255,255,255,0.12);
+      text-align: center;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .calendar-reveal a:hover {
+      background: rgba(255,255,255,0.2);
     }
 
     /* Enhanced night mode effects */
@@ -448,90 +488,251 @@
 
     /* Mobile Responsive Adjustments */
     @media (max-width: 768px) {
-      .tree {
-        width: min(25vw, 120px); /* Responsive but capped */
-        bottom: 60px;
+      .sand {
+        height: 48px; /* Keep consistent */
       }
 
-      .icecream {
-        width: min(15vw, 56px);  /* Smaller but still grabbable */
-        height: min(15vw, 56px);
+      .tree {
+        width: 70px;
+        bottom: 48px;
       }
 
       .chippy {
-        width: min(30vw, 120px); /* Scales with viewport but limited */
-        height: min(30vw, 120px);
-        right: -120px;
-        bottom: 64px;
+        width: 70px;
+        height: 70px;
+        bottom: 36px;
+        right: -80px;
       }
 
       .chippy.active {
-        right: min(5vw, 20px);
+        right: 10px;
       }
 
+      .umbrella {
+        width: 50px;
+        height: 50px;
+        bottom: 44px;
+      }
+
+      .icecream {
+        width: 40px;
+        height: 40px;
+      }
+
+      /* Adjust control panel for better touch targets */
       .controls {
-        padding: min(3vw, 12px);
+        padding: 15px;
       }
 
       .controls label {
-        font-size: clamp(10px, 3vw, 14px);
-        margin-bottom: min(2vw, 10px);
-      }
-
-      .audio-controls {
-        bottom: min(4vw, 15px);
-        left: min(4vw, 15px);
-        padding: min(2vw, 8px);
-        gap: min(2vw, 8px);
-      }
-
-      .audio-controls button {
-        width: min(8vw, 28px);
-        height: min(8vw, 28px);
-        font-size: min(4vw, 16px);
-      }
-
-      .audio-controls input[type="range"] {
-        width: min(20vw, 70px);
-        height: min(1vw, 4px);
+        font-size: 12px;
+        margin-bottom: 12px;
+        padding: 5px 0;
       }
 
       .treat-counter {
-        font-size: clamp(10px, 3vw, 14px);
-        padding: min(3vw, 12px);
-        top: min(20vw, 90px);
-        right: min(4vw, 15px);
-      }
-
-      .calendar-reveal {
-        width: min(90vw, 300px);
-        padding: min(5vw, 20px);
-      }
-
-      .sand {
-        height: min(15vw, 64px);
-        background-size: min(2vw, 8px) min(2vw, 8px);
-      }
-
-      .splat {
-        width: min(15vw, 56px);
-        height: min(15vw, 56px);
+        top: 20px;
+        right: 10px;
+        font-size: 12px;
+        padding: 8px;
       }
     }
 
-    /* Adjustments for very small screens */
-    @media (max-width: 380px) {
-      .controls label {
-        font-size: clamp(8px, 2.5vw, 12px);
+    /* iPhone-specific optimizations - replace existing media query */
+    @media (max-width: 428px) and (min-height: 800px) {
+      .sand {
+        height: 48px;
+        position: fixed;
+        bottom: 0;
       }
 
       .tree {
-        width: min(22vw, 100px);
+        width: 70px;
+        bottom: 48px;
       }
 
       .chippy {
-        width: min(28vw, 110px);
-        height: min(28vw, 110px);
+        width: 82px; /* Slightly larger target */
+        height: 82px;
+        bottom: 48px;
+      }
+
+      .icecream {
+        width: 38px; /* Bigger ice cream */
+        height: 38px;
+      }
+
+      /* Adjust controls spacing */
+      .controls {
+        padding: 12px;
+        top: 8px;
+        left: 8px;
+        max-width: 42%;
+      }
+
+      .treat-counter {
+        font-size: 11px;
+        padding: 8px;
+        top: 64px; /* Move below sun */
+        right: 8px;
+      }
+
+      .sun {
+        top: 8px;
+        right: 8px;
+        width: 48px;
+      }
+
+      /* Fix reward screen */
+      .calendar-reveal {
+        width: 85%;
+        max-width: 300px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.95);
+        border: 2px solid rgba(255,255,255,0.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      }
+
+      .calendar-reveal h3 {
+        font-size: 13px;
+        margin-bottom: 16px;
+        line-height: 1.4;
+      }
+
+      .calendar-reveal a {
+        font-size: 12px;
+        padding: 12px 8px;
+        margin-top: 8px;
+      }
+    }
+
+    /* Small iPhone SE optimization */
+    @media (max-width: 380px) {
+      .chippy {
+        width: 68px;
+        height: 68px;
+      }
+
+      .tree {
+        width: 65px;
+      }
+
+      .icecream {
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    /* Landscape mode adjustments */
+    @media (max-height: 480px) {
+      .controls {
+        max-height: 80vh;
+        overflow-y: auto;
+        max-width: 40%;
+      }
+
+      .sun {
+        width: 48px;
+        top: 12px;
+      }
+    }
+
+    /* Mobile UI improvements */
+    @media (max-width: 428px) {
+      .controls {
+        padding: 10px;
+        top: 8px;
+        left: 8px;
+        max-width: 160px;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .controls label {
+        font-size: 10px;
+        line-height: 1.2;
+        padding: 4px 0;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: flex-start;
+        min-height: 28px;
+      }
+
+      .controls input[type="checkbox"] {
+        margin: 2px 6px 0 0;
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+
+      /* Fix reward screen on mobile */
+      .calendar-reveal {
+        width: min(90%, 300px);
+        padding: 24px 20px;
+      }
+
+      .calendar-reveal h3 {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .calendar-reveal a {
+        width: 100%;
+        padding: 14px 12px;
+        font-size: 12px;
+      }
+
+      /* Adjust spacing for controls */
+      .sun {
+        top: 8px;
+        right: 8px;
+        width: 42px;
+        height: 42px;
+      }
+
+      .treat-counter {
+        top: 58px;
+        right: 8px;
+        font-size: 11px;
+        padding: 8px 10px;
+        min-width: 85px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(4px);
+      }
+    }
+
+    /* Smaller screen refinements */
+    @media (max-width: 360px) {
+      .controls {
+        max-width: 135px;
+        padding: 10px;
+      }
+
+      .controls label {
+        font-size: 10px;
+        margin-bottom: 10px;
+      }
+
+      .controls input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+        margin-right: 5px;
+      }
+
+      .calendar-reveal {
+        width: 85%;
+        padding: 24px 16px;
+      }
+
+      .calendar-reveal h3 {
+        font-size: 14px;
+      }
+
+      .calendar-reveal a {
+        padding: 14px;
+        font-size: 12px;
       }
     }
   </style>
@@ -864,7 +1065,8 @@
       const splat = document.createElement('div');
       splat.className = 'splat';
       splat.style.left = `${x - 24}px`;
-      splat.style.top = `${y - 24}px`;
+      splat.style.position = 'fixed';
+      splat.style.bottom = '46px';
       splat.style.backgroundImage = 'url(pixel-icecream.png)';
       scene.appendChild(splat);
       
